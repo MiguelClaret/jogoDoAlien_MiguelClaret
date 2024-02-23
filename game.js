@@ -37,6 +37,9 @@ var plataforma3
 var moeda;
 var pontuacao = 0
 var placar
+var situacao
+var lista = ['ruim', 'ótimo']
+var i = 0
 
 
 function preload() {
@@ -63,7 +66,7 @@ function create() {
   teclado = this.input.keyboard.createCursorKeys(); // add os inputs do teclado
   // add física estática as imagens
   plataforma1 = this.physics.add.staticImage(larguraJogo / 2, alturaJogo / 2, 'plataforma_tijolo')
-  plataforma2 = this.physics.add.staticImage(160, 630, 'plataforma_tijolo2')
+  plataforma2 = this.physics.add.staticImage(180, 630, 'plataforma_tijolo2')
   plataforma3 = this.physics.add.staticImage(550, 680, 'plataforma_tijolo3')
   // add colisões entre as plataformas e o alien
   this.physics.add.collider(alien, plataforma1)
@@ -80,6 +83,7 @@ function create() {
   this.physics.add.collider(moeda, plataforma3)
 
   placar = this.add.text(50, 50, 'Moedas' + pontuacao, { fontSize: '45px', fill: '#495613' }) // add o placar 
+  situacao = this.add.text(50, 100, 'Sua situação é:' + lista[i], { fontSize: '30px', fill: '#495613' })
   // configura a captura da moeda, e soma os pontos
   this.physics.add.overlap(alien, moeda, function () { // é um detector de colisões, entre o alien e a moeda
     moeda.setVisible(false)
@@ -88,6 +92,15 @@ function create() {
     pontuacao += 1 // acresenta mais um ponto no placar
     placar.setText('Moedas: ' + pontuacao) 
     moeda.setVisible(true)
+
+    if(pontuacao <= 15){
+      i = 0
+    }
+  
+    else{
+      i = 1
+    }
+    situacao.setText('Sua situação é: ' + lista[i])
   })
 
   alien.body.setSize(100, 80, true) // altera o hitbox do alien
@@ -113,6 +126,8 @@ function update() {
   }
 
   fogo.setPosition(alien.x, alien.y + alien.height / 2) // configura o fogo para seguir o alien
+
+  
 
 }
 
